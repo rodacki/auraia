@@ -1,0 +1,146 @@
+ParsedChatCompletionMessage[QuestaoObjetiva](content='
+{
+    "enunciado":"Analise o código a seguir e identifique o que ele calcula. O código faz a leitura de coordenadas de pontos e computa uma métrica. Qual é o resultado final exibido pelo programa?",
+    "alternativa_a":"A soma das distâncias entre todos os pontos inseridos.",
+    "alternativa_b":"O perímetro do polígono formado pelos pontos inseridos.",
+    "alternativa_c":"A distância do ponto inicial até o último ponto inserido.",
+    "alternativa_d":"A distância entre o primeiro e o último ponto inseridos apenas.",
+    "alternativa_e":"O comprimento total do caminho percorrido por todos os pontos inseridos." ,
+    "resposta_correta":"d"
+}', 
+    refusal=None, 
+    role='assistant', 
+    audio=None, 
+    function_call=None, 
+    tool_calls=None, 
+    parsed=QuestaoObjetiva(
+        enunciado='Analise o código a seguir e identifique o que ele calcula. O código faz a leitura de coordenadas de pontos e computa uma métrica. Qual é o resultado final exibido pelo programa?', 
+        alternativa_a='A soma das distâncias entre todos os pontos inseridos.', 
+        alternativa_b='O perímetro do polígono formado pelos pontos inseridos.', 
+        alternativa_c='A distância do ponto inicial até o último ponto inserido.', 
+        alternativa_d='A distância entre o primeiro e o último ponto inseridos apenas.', 
+        alternativa_e='O comprimento total do caminho percorrido por todos os pontos inseridos.', 
+        resposta_correta='d'
+        )
+)
+
+
+# testar endpoints:
+
+curl -X 'GET' 'http://127.0.0.1:8000/classroom/cursos' \
+  -H 'accept: application/json' | jq
+
+
+curl -X 'GET' 'http://127.0.0.1:8000/classroom/curso/{course_id}/trabalhos' \
+  -H 'accept: application/json' | jq
+
+  curl -X 'GET' 'http://127.0.0.1:8000/classroom/curso/655713444095/trabalhos' \
+  -H 'accept: application/json' | jq
+
+curl -X 'GET' 'http://127.0.0.1:8000/classroom/curso/{course_id}/trabalho/{coursework_id}/submissoes' \
+  -H 'accept: application/json' | jq
+
+
+curl -X 'GET' 'http://127.0.0.1:8000/classroom/curso/655713444095/trabalho/670729620363/submissoes' \
+  -H 'accept: application/json' | jq
+
+curl -X 'GET' 'http://127.0.0.1:8000/classroom/curso/{course_id}/trabalho/{coursework_id}/submissao/{submission_id}/processar' \
+  -H 'accept: application/json' | jq
+
+curl -X 'GET' 'http://127.0.0.1:8000/classroom/curso/655713444095/trabalho/670729620363/submissao/Cg4IwJCK3ooTEIuX59TCEw/processar' \
+  -H 'accept: application/json' | jq
+
+
+
+TODO
+
+1) implementar armazenamento de avaliacoes no backend
+
+
+{"examName":"Teste 1","examDate":"2025-03-20","courseName":"2024 - Algoritmos - BCC","students":[{"studentId":"110394395690325574536","studentName":"Sarah Sabel","submissions":[],"questions":[{"sourceCode":"Erro ao obter código-fonte","subQuestions":[]}]}]}
+
+
+
+Estrutura da prova para Local Storage:
+
+Curso:
+ - nome (do classroom)
+ - id (do classroom)
+
+Topico (é um coursework):
+  - titulo (do classroom)
+  - id (do classroom)
+
+Aluno:
+  - nome
+  - 
+
+
+Prova: 
+  - id (unico, gerado pelo frontend)
+  - curso
+  - id do curso
+  - titulo: str
+  - data: str
+  - numero de questoes
+  - lista de topicos
+  - lista de alunos
+
+
+
+// Estrutura para armazenar o código de cada questão para um aluno. 
+// topico: contem dados de um topico do classroom 
+// sourcecode: é o codigo fonte da submissao feirta pelo aluno e obtido do drive do professor
+// exercicio é o id do classroom de uma das submissoes do aluno dentro do topico (classwork) classroom
+// subQuestions: as 3 perguntas/sub-questoes que serao criadas pela api openai
+interface QuestionData {
+  topico: Coursework;
+  sourceCode: string;
+  exercicio: submissionId;
+  subQuestions: string[];
+}
+
+// dados de uma atividade prática  obtidos do classroom
+interface Coursework {
+  id: string;
+  name: string;
+}
+
+// dados de um aluno selecionado no frontend
+// id do aluno obtido do classroom
+// question data, array, cada elemento corresponde a uma questao obtida do numero de questoes 
+interface Student {
+  id: string;
+  name: string;
+  question_data: QuestionData[]
+}
+
+// id e name obtidos de dados do curso do classroom
+interface Course {
+  name: string (obtido da api classroom)
+  id: obtido do classroom
+}
+
+interface Evaluation {
+  id: (unico, gerado pelo frontend)
+  course: Course;
+  title: string;
+  date: string;
+  numQuestions: number;
+  selectedCourseworks: string[];
+  selectedStudents: Student[];
+}
+
+
+
+Entidades classroom:
+
+Course: uma disciplina
+Topic: topico do curso
+Coursework: uma atividade prática
+studentSubmissions: lista de sub,missoes de alunos de um coursework
+submission: uma submissao de um aluno de um coursework
+attachments: lista de anexos (arquivos) que um aluno enviou em uma submissao, é a lista de arquivos com codigo fonte submetidos pelo aluno
+attachment: é um arquivo fonte submetido pelo aluno e que pode ser recuperado no drive do professor
+
+
