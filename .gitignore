@@ -173,3 +173,7 @@ cython_debug/
 *.pdf
 backend/src/provaia/data/token.json
 backend/src/provaia/data/token.json
+
+# Credenciais OAuth do Google (nunca versionar)
+backend/src/provaia/credentials*.json
+backend/src/provaia/data/credentials*.json
